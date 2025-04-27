@@ -40,7 +40,7 @@
             <a href="{{ entry['Onde adquirir'] }}">
                 {% endif %}
                 <img src="{{ entry['Imagem'].strip() }}" alt="{{ entry['Título'] }}" align="left">
-                {% if entry['Onde adquirir'] and entry['Onde adquirir'] != 'Indisponível' %}
+                {% if entry['Onde adquirir'] and entry['Preço'] != 'Indisponível' %}
             </a>
             {% endif %}
             {% endif %}
@@ -50,10 +50,12 @@
             {% endif %}
             <strong>Tipo</strong>: {{ entry['Tipo'] }}<br>
             <strong>Preço</strong>: {{ entry['Preço'] }}<br>
-            <strong>Onde adquirir</strong>:
-            {% for link in entry['Onde adquirir'].split('\n') %}
-                <a target="_blank" href="{{ link.strip() }}">link</a>{% if not loop.last %} | {% endif %}
-            {% endfor %}
+            {% if entry['Onde adquirir'] and entry['Preço'] != 'Indisponível' %}
+                <strong>Onde adquirir</strong>:
+                {% for link in entry['Onde adquirir'].split('\n') %}
+                    <a target="_blank" href="{{ link.strip() }}">link</a>{% if not loop.last %} | {% endif %}
+                {% endfor %}
+            {% endif %}
             <hr>
             <div class="module-description">
             <strong>Descrição</strong>:
