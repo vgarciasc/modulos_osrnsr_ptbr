@@ -11,7 +11,6 @@ h1 {
 }
 
 .container {
-    width: 90%;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -92,7 +91,7 @@ hr {
     color: grey;
 }
 
-.subheader {
+.subheader, .footnote {
     text-align: center;
     margin: 2em;
     font-style: italic;
