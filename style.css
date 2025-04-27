@@ -1,0 +1,104 @@
+body {
+    font-family: Tahoma, sans-serif;
+    margin: 20px;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 1em;
+}
+
+h1 {
+    text-align: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.filters {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.filters select, .filters input {
+    padding: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* FLEX LAYOUT - row by row */
+#modules {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.module {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    width: 45%;
+    box-sizing: border-box;
+    padding: 15px;
+    opacity: 1; /* Show by default */
+    transform: translateY(0); /* No offset initially */
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.module.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.module img {
+    max-width: 30%;
+    height: auto;
+    float: left;
+    margin-bottom: 15px;
+    margin-right: 15px;
+}
+
+.module-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: -15px -15px 0 -15px;
+    margin-bottom: 10px;
+    background-color: #d2d2d2;
+    padding: 8px;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1000px) {
+    .module {
+        width: 45%;
+    }
+}
+
+@media (max-width: 600px) {
+    .module {
+        width: 100%;
+    }
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 5px;
+}
+
+.module-description > span {
+    color: grey;
+}
+
+.subheader {
+    text-align: center;
+    margin: 2em;
+    font-style: italic;
+    color: grey;
+}
+
+a:hover {
+    background-color: yellow;
+}

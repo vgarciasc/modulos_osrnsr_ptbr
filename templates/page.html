@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Módulos OSR/NSR em Português</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container">
+    <h1>Módulos OSR/NSR em Português</h1>
+    <div class="subheader">
+    Um apanhado de módulos de aventura <a href="https://www.tomosrevelados.com.br/2024/09/maximas-da-osr-vs-maximas-da-nsr.html">OSR/NSR</a> publicados em português brasileiro.<br>
+        Se conhecer algum que não está incluído na lista abaixo, por favor <a href="https://vinizinho.net/figures/contato_1.png">entre em contato</a>!
+        <br><br>
+        Última atualização: {{ last_update }}
+    </div>
+
+    <!-- SEARCH AND FILTERS -->
+    <div class="filters">
+        <input type="text" id="searchInput" placeholder="Buscar módulo..." style="width: 300px;">
+        <select id="sistemaFilter">
+            <option value="">Todos os Sistemas</option>
+        </select>
+        <select id="tipoFilter">
+            <option value="">Todos os Tipos</option>
+        </select>
+    </div>
+
+    <!-- MODULES -->
+    <div id="modules">
+        {% for entry in entries %}
+        <div class="module" data-title="{{ entry['Nome do Módulo'] }}" data-sistema="{{ entry['Sistema'] }}"
+             data-tipo="{{ entry['Tipo'] }}">
+            <div class="module-title">{{ entry['Nome do Módulo'] }} ({{ entry['Ano de Lançamento'] }})</div>
+            {% if entry['Imagem'] %}
+            {% if entry['Onde adquirir'] and entry['Onde adquirir'] != 'Indisponível' and entry['Onde adquirir'].split('\n')|length == 1 %}
+            <a href="{{ entry['Onde adquirir'] }}">
+                {% endif %}
+                <img src="{{ entry['Imagem'].strip() }}" alt="{{ entry['Título'] }}" align="left">
+                {% if entry['Onde adquirir'] and entry['Onde adquirir'] != 'Indisponível' %}
+            </a>
+            {% endif %}
+            {% endif %}
+            <strong>Autoria</strong>: {{ entry['Autoria'] }}<br>
+            {% if entry['Tradução'] != '--' %}
+            <strong>Tradução</strong>: {{ entry['Tradução'] }}<br>
+            {% endif %}
+            <strong>Tipo</strong>: {{ entry['Tipo'] }}<br>
+            <strong>Preço</strong>: {{ entry['Preço'] }}<br>
+            <strong>Onde adquirir</strong>:
+            {% for link in entry['Onde adquirir'].split('\n') %}
+                <a target="_blank" href="{{ link.strip() }}">link</a>{% if not loop.last %} | {% endif %}
+            {% endfor %}
+            <hr>
+            <div class="module-description">
+            <strong>Descrição</strong>:
+            {% set lines = entry['Descrição'].split('\n') %}
+            <span>
+            {% for line in lines %}
+                {% if line.startswith('- ') %}
+                    <ul>
+                    <li>{{ line[2:] }}</li> {# remove '- ' at start #}
+                    </ul>
+                {% else %}
+                    {{ line }}
+                    {% if not loop.last %} <br> {% endif %}
+                {% endif %}
+            {% endfor %}
+            </span>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Filtering Script -->
+<script>
+const modulesData = {{ modules_data | tojson }};
+
+function filterModules() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const sistema = document.getElementById('sistemaFilter').value;
+    const tipo = document.getElementById('tipoFilter').value;
+
+    const modules = document.querySelectorAll('.module');
+    modules.forEach(module => {
+        const title = module.dataset.title.toLowerCase();
+        const mSistemas = module.dataset.sistema.split(',').map(s => s.trim());
+        const mTipos = module.dataset.tipo.split(',').map(t => t.trim());
+
+        const matchesSearch = title.includes(search);
+        const matchesSistema = !sistema || mSistemas.includes(sistema);
+        const matchesTipo = !tipo || mTipos.includes(tipo);
+
+        if (matchesSearch && matchesSistema && matchesTipo) {
+            module.style.display = "block";
+            module.classList.add('show');
+        } else {
+            module.style.display = "none";
+            module.classList.remove('show');
+        }
+    });
+}
+
+// Populate Filters
+    function populateFilters() {
+        const sistemaSet = new Set();
+        const tipoSet = new Set();
+
+        modulesData.forEach(m => {
+            if (m.sistema) {
+                m.sistema.split(',').forEach(s => sistemaSet.add(s.trim()));
+            }
+            if (m.tipo) {
+                m.tipo.split(',').forEach(t => tipoSet.add(t.trim()));
+            }
+        });
+
+        // Alphabetize each set
+        const sistemaArray = Array.from(sistemaSet).sort();
+        const tipoArray = Array.from(tipoSet).sort();
+
+        sistemaArray.forEach(s => {
+            document.getElementById('sistemaFilter').innerHTML += `<option value="${s}">${s}</option>`;
+        });
+        tipoArray.forEach(t => {
+            document.getElementById('tipoFilter').innerHTML += `<option value="${t}">${t}</option>`;
+        });
+    }
+
+    // Add listeners
+    document.getElementById('searchInput').addEventListener('input', filterModules);
+    document.getElementById('sistemaFilter').addEventListener('change', filterModules);
+    document.getElementById('tipoFilter').addEventListener('change', filterModules);
+
+    // Init
+    populateFilters();
+</script>
+
+</body>
+</html>
