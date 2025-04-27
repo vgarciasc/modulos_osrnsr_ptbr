@@ -36,7 +36,7 @@
              data-tipo="{{ entry['Tipo'] }}">
             <div class="module-title">{{ entry['Nome do Módulo'] }} ({{ entry['Ano de Lançamento'] }})</div>
             {% if entry['Imagem'] %}
-            {% if entry['Onde adquirir'] and entry['Onde adquirir'] != 'Indisponível' and entry['Onde adquirir'].split('\n')|length == 1 %}
+            {% if entry['Onde adquirir'] and entry['Preço'] != 'Indisponível' and entry['Onde adquirir'].split('\n')|length == 1 %}
             <a href="{{ entry['Onde adquirir'] }}">
                 {% endif %}
                 <img src="{{ entry['Imagem'].strip() }}" alt="{{ entry['Título'] }}" align="left">
